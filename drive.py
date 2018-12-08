@@ -1,20 +1,20 @@
 from tkinter import *
-import networkx
+from networkx import *
 import matplotlib.pyplot as plt
 
 
 def randomGraph():
-    networkx.draw(networkx.gnm_random_graph(10, 20))
+    draw(gnm_random_graph(10, 20))
     plt.show()
 
 
 def regularGraph():
-    networkx.draw(networkx.gnm_random_graph(10, 20))
+    draw(random_regular_graph(4, 10))
     plt.show()
 
 
 def treeGraph():
-    networkx.draw(networkx.gnm_random_graph(10, 20))
+    draw(random_tree(10))
     plt.show()
 
 
