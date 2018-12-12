@@ -1,7 +1,7 @@
 from tkinter import *
 from networkx import *
 import matplotlib.pyplot as plt
-#roy tesr
+
 
 def randomGraph():
     draw(gnm_random_graph(10, 20))
