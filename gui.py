@@ -37,7 +37,6 @@ class GUI:
     def build_tree(self):
         try:
             D.update_v(int(self.textBox_v.get("1.0", "end-1c")))
-            D.update_e(int(self.textBox_e.get("1.0", "end-1c")))
             D.tree_graph()
         except ValueError:
             self.textBox_msg.delete('1.0', END)
