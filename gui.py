@@ -35,37 +35,40 @@ class GUI:
             print(self.textBox.get(1))
 
     def build_tree(self):
-        D.update_v(int(self.textBox_v.get("1.0", "end-1c")))
-        D.update_e(int(self.textBox_e.get("1.0", "end-1c")))
-        D.tree_graph()
+        try:
+            D.update_v(int(self.textBox_v.get("1.0", "end-1c")))
+            D.update_e(int(self.textBox_e.get("1.0", "end-1c")))
+            D.tree_graph()
+        except ValueError:
+            self.textBox_msg.delete('1.0', END)
+            self.textBox_msg.insert('1.0', "pls insert 2 integers", "edges")
 
     def build_regular(self):
-        D.update_v(int(self.textBox_v.get("1.0", "end-1c")))
-        D.update_e(int(self.textBox_e.get("1.0", "end-1c")))
-        if D.e * D.v % 2 == 0 and D.v > D.e:
-            D.regular_graph()
-        elif D.e * D.v % 2 != 0:
-            print("v * e must be even")
+        try:
+            D.update_v(int(self.textBox_v.get("1.0", "end-1c")))
+            D.update_e(int(self.textBox_e.get("1.0", "end-1c")))
+            if D.e * D.v % 2 == 0 and D.v > D.e:
+                D.regular_graph()
+            elif D.e * D.v % 2 != 0:
+                print("v * e must be even")
+                self.textBox_msg.delete('1.0', END)
+                self.textBox_msg.insert('1.0', "in regular Graph v * d must be even", "edges")
+            elif D.v <= D.e:
+                print("should be more degrees than nodes")
+                self.textBox_msg.delete('1.0', END)
+                self.textBox_msg.insert('1.0', "should be more degrees than nodes", "edges")
+        except ValueError:
             self.textBox_msg.delete('1.0', END)
-            self.textBox_msg.insert('1.0', "in regular Graph v * d must be even", "edges" )
-        elif D.v <= D.e:
-            print("should be more degrees than nodes")
-            self.textBox_msg.delete('1.0', END)
-            self.textBox_msg.insert('1.0', "should be more degrees than nodes", "edges")
+            self.textBox_msg.insert('1.0', "pls insert 2 integers", "edges")
 
     def build_random(self):
-        D.update_v(int(self.textBox_v.get("1.0", "end-1c")))
-        D.update_e(int(self.textBox_e.get("1.0", "end-1c")))
-        D.random_graph()
-
-
-
-
-
-    # buttonCommit = Button(root, height=1, width=10, text="Commit",
-    #                       command=lambda: retrieve_input(self))
-    # command=lambda: retrieve_input() >>> just means do this when i press the button
-    # buttonCommit.pack()
+        try:
+            D.update_v(int(self.textBox_v.get("1.0", "end-1c")))
+            D.update_e(int(self.textBox_e.get("1.0", "end-1c")))
+            D.random_graph()
+        except ValueError:
+            self.textBox_msg.delete('1.0', END)
+            self.textBox_msg.insert('1.0', "pls insert 2 integers", "edges")
 
 
 root = Tk()
