@@ -1,33 +1,39 @@
-from tkinter import *
+# from gui import *
+
 from networkx import *
 import matplotlib.pyplot as plt
 
 
-def randomGraph():
-    draw(gnm_random_graph(10, 20))
-    plt.show()
+class Drive:
+    v = 10
+    e = 10
+
+    def __init__(self):
+        print("init")
+
+    def regular_graph(self):
+        draw(random_regular_graph(self.e, self.v))
+        plt.show()
+
+    def tree_graph(self):
+        draw(random_tree(self.v))
+        plt.show()
+
+    def random_graph(self):
+        draw(gnm_random_graph(self.v, self.e))
+        plt.show()
+
+    def update_v(self, v_input):
+        self.v = v_input
+
+    def update_e(self, e_input):
+        self.e = e_input
 
 
-def regularGraph():
-    draw(random_regular_graph(4, 10))
-    plt.show()
+# a = Drive()
+# print(a.v)
+# a.update_v(14)
+# print(a.v)
 
 
-def treeGraph():
-    draw(random_tree(10))
-    plt.show()
 
-
-top = Tk()
-frame = Frame(top)
-label1 = Label(top, text="Choose which Graph you would like:")
-randomButton = Button(frame, text="Random Graph", command=randomGraph)
-regularButton = Button(frame, text="Regular Graph", command=regularGraph)
-treeButton = Button(frame, text="Tree Graph", command=treeGraph)
-
-label1.pack()
-randomButton.pack(side=LEFT)
-regularButton.pack(side=LEFT)
-treeButton.pack(side=LEFT)
-frame.pack()
-top.mainloop()
