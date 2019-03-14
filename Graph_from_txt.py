@@ -2,6 +2,8 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from networkx import *
 import drive
+import Rw
+# import pgn2gif as pg
 
 class GraphFromTxt:
     def __init__(self, text): # init from text file
@@ -27,12 +29,9 @@ G_listed = GraphFromTxt("small.txt")
 G_listed.length()
 G = G_listed.parse()
 
-# draw(G)
-# plt.show()
-
 node_colors = []
-for i in range(0,8):
-        if i < 2:
+for i in range(0, 8):
+        if i < 1:
            node_colors.append('b')
         else:
            node_colors.append('r')
@@ -40,28 +39,39 @@ for i in range(0,8):
 add colors to grapg
 https://stackoverflow.com/questions/20523327/python-and-networkx-how-to-change-the-color-of-nodes
 """
-node_colors[4] = 'g'
+
 print(node_colors)
 nx.draw_circular(G, node_color=node_colors)
 plt.show()
-
-p = drive()
-
-
+plt.savefig('visual graphs\\books_read2.png')
 
 """
 add field of stepped node to each node in graph.
+https://networkx.github.io/documentation/networkx-1.9/reference/generated/networkx.classes.function.set_node_attributes.html
 """
-
 nx.set_node_attributes(G, 0 , 'step')
 print(sorted(G.nodes))
 print(G.node[2]['step'])
 G.node[2]['step'] += 1
 print(G.node[2]['step'])
 
+tree = nx.bfs_tree(G,1)
+print(tree)
+
+def random_walk(G):
+    nodes = sorted(G.nodes())
+    s = nodes[0]
+    # print(G.adj[s])
+    for nbr, datadict in G.adj[s].items():
+        print(nbr)
+
+    adj = G.adj[s].items()
 
 
+draw(tree)
+plt.show()
 
+# random_walk(G)
 
 # import networkx as nx
 #
