@@ -1,7 +1,7 @@
 from drive import *
 from tkinter import *
 
-
+# if num_of_line < 6594982:
 class GUI:
     def __init__(self, root, D):
         self.root = root
@@ -30,6 +30,11 @@ class GUI:
         self.textBox_msg = Text(root, height=2, width=22)
         self.textBox_msg.pack(side=LEFT)
         self.textBox_msg.insert('1.0', "msg to user if needed", "edges")
+
+        print(type(self.label))
+        print(type(self.randomButton))
+        print(self.root)
+
 
     def p(self):
             print(self.textBox.get(1))

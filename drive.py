@@ -9,7 +9,7 @@ class Drive:
     e = 10
 
     def __init__(self):
-        print("init")
+        print("init drive")
 
     def regular_graph(self):
         draw(random_regular_graph(self.e, self.v))
@@ -28,6 +28,12 @@ class Drive:
 
     def update_e(self, e_input):
         self.e = e_input
+
+    def show(self,G):
+        draw(G)
+        plt.show()
+
+
 
 
 # a = Drive()
