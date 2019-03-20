@@ -70,6 +70,7 @@ class GUI:
             D.update_v(int(self.textBox_v.get("1.0", "end-1c")))
             D.update_e(int(self.textBox_e.get("1.0", "end-1c")))
             D.random_graph()
+
         except ValueError:
             self.textBox_msg.delete('1.0', END)
             self.textBox_msg.insert('1.0', "pls insert 2 integers", "edges")

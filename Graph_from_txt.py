@@ -12,11 +12,16 @@ class GraphFromTxt:
         for line in file:
             self.GraphStan.append(line)
 
+
+
     def print_list(self):
         print(self.GraphStan)
 
     def length(self):
         print("num of nodes is: " + str(self.GraphStan.__len__()))
+
+    def length_int(self):
+        return self.GraphStan.__len__()
 
     def print_edges(self, G):
         print(G.edges())
@@ -25,16 +30,18 @@ class GraphFromTxt:
         return nx.parse_edgelist(self.GraphStan, nodetype=int)
 
 
-G_listed = GraphFromTxt("small.txt")
+G_listed = GraphFromTxt("output_graph.txt")
 G_listed.length()
 G = G_listed.parse()
 
 node_colors = []
-for i in range(0, 8):
+for i in range(0, len(G.nodes()) ):
         if i < 1:
            node_colors.append('b')
         else:
            node_colors.append('r')
+
+
 """
 add colors to grapg
 https://stackoverflow.com/questions/20523327/python-and-networkx-how-to-change-the-color-of-nodes
@@ -53,9 +60,9 @@ https://networkx.github.io/documentation/networkx-1.9/reference/generated/networ
 nx.set_node_attributes(G, 0 , 'step')
 print(sorted(G.nodes))
 # print(G.node[2]['step'])
-G.node[2]['step'] += 3
-G.node[3]['step'] += 2
-G.node[4]['step'] += 1
+# G.node[2]['step'] += 3
+# G.node[3]['step'] += 2
+# G.node[4]['step'] += 1
 # print(G.node[2]['step'])
 
 """
@@ -79,7 +86,7 @@ return : node with lowest stepped times
 """
 
 
-def min_stepped(G, adj):
+def min_stepped_node(G, adj):
     if len(adj) > 0:
         min_step = 0
         node_index = 0
@@ -93,6 +100,8 @@ def min_stepped(G, adj):
             if(n_stepped < min_step):
                 min_step = n_stepped
                 node_index = node[0]
+
+
     return node_index
 
 
@@ -101,17 +110,45 @@ random walk algoritm
 """
 
 
-def random_walk(G):
-    print("random walk function")
+def is_covered(G):
     nodes = sorted(G.nodes())
-    s = nodes[0]
-    adj_n = G.adj[s].items()
-    # print(adj_n)
-    print(min_stepped(G, adj_n))
+    for node in nodes:
+        if stepped(G, node) == 0:
+            return False
+    return True
+
+
+# nx.draw_circular(G,  node_color=node_colors , node_size=10)
+# plt.show()
+
+
+def random_walk(G, s, c1):
+    # print("random walk function")
+    if not is_covered(G):
+        adj_n = G.adj[s].items()
+        print(adj_n)
+        next_node = min_stepped_node(G, adj_n)
+        G.node[next_node]['step'] += 1
+        print("next node is " + str(next_node))
+        node_colors[next_node] = 'b'
+        print("painted node number " + str(next_node-1))
+        if(c1%70==0):
+            print(c1)
+            # with_labels=True,
+            nx.draw(G,  node_color=node_colors , node_size=10)
+            plt.show()
+        c1 = c1 + 1
+        print(c1)
+        random_walk(G, next_node, c1)
+        return c1
 
 
 
-random_walk(G)
+
+
+nodes = sorted(G.nodes())
+s = nodes[0]
+print(random_walk(G, s,0))
 
 
 # random_walk(G)
