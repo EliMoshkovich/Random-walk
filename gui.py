@@ -4,20 +4,37 @@ from tkinter import *
 # if num_of_line < 6594982:
 class GUI:
     def __init__(self, root, D):
+
         self.root = root
-        root.title("A simple GUI")
+        root.title("Random Walk")
+
+        menu = Menu(root)
+        root.config(menu=menu)
+        filemenu = Menu(menu, tearoff=0)
+        filemenu.add_command(label='Open...')
+        filemenu.add_separator()
+        filemenu.add_command(label='Exit', command=root.quit)
+        menu.add_cascade(label='File', menu=filemenu)
+        helpmenu = Menu(menu, tearoff=0)
+        menu.add_cascade(label='Help', menu=helpmenu)
+        helpmenu.add_command(label='About')
 
         self.label = Label(root, text="Choose which Graph you would like:")
         self.label.pack()
 
-        self.randomButton = Button(root, text="Random Graph", command=self.build_random)
-        self.randomButton.pack(side=LEFT)
+        v = IntVar()
+        Radiobutton(root, text='Regular Graph', command=self.build_regular, variable=v, value=1).pack(anchor=W)
+        Radiobutton(root, text="Random Graph", command=self.build_random, variable=v, value=2).pack(anchor=W)
+        Radiobutton(root, text="Tree Graph", command=self.build_tree, variable=v, value=3).pack(anchor=W)
 
-        self.regularButton = Button(root, text="Regular Graph", command=self.build_regular)
-        self.regularButton.pack(side=LEFT)
+        #self.randomButton = Button(root, text="Random Graph", command=self.build_random)
+        #self.randomButton.pack(side=LEFT)
 
-        self.treeButton = Button(root, text="Tree Graph", command=self.build_tree)
-        self.treeButton.pack(side=LEFT)
+        #self.regularButton = Button(root, text="Regular Graph", command=self.build_regular)
+        #self.regularButton.pack(side=LEFT)
+
+        #self.treeButton = Button(root, text="Tree Graph", command=self.build_tree)
+        #self.treeButton.pack(side=LEFT)
 
         self.textBox_v = Text(root, height=2, width=10)
         self.textBox_v.pack(side=LEFT)
@@ -31,9 +48,9 @@ class GUI:
         self.textBox_msg.pack(side=LEFT)
         self.textBox_msg.insert('1.0', "msg to user if needed", "edges")
 
-        print(type(self.label))
-        print(type(self.randomButton))
-        print(self.root)
+        #print(type(self.label))
+        #print(type(self.randomButton))
+        #print(self.root)
 
 
     def p(self):
