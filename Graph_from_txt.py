@@ -100,8 +100,6 @@ def min_stepped_node(G, adj):
             if(n_stepped < min_step):
                 min_step = n_stepped
                 node_index = node[0]
-
-
     return node_index
 
 
@@ -121,34 +119,40 @@ def is_covered(G):
 # nx.draw_circular(G,  node_color=node_colors , node_size=10)
 # plt.show()
 
+nx.draw(G, node_color=node_colors, node_size=10)
+plt.title("Random Walk")
+plt.tight_layout(pad=0)
+plt.show()
+
+
+def show_graph(G):
+    # with_labels=True,
+    fig = plt.figure(figsize=(12, 12))
+    # ax = plt.subplot(111)
+    # ax.set_title('Graph - Shapes', fontsize=10)
+    nx.draw(G, node_color=node_colors, node_size=10)
+    plt.title("Random Walk")
+    plt.show()
+    plt.savefig('random_walk_2d.png', dpi=250)
+
 
 def random_walk(G, s, c1):
     # print("random walk function")
     if not is_covered(G):
         adj_n = G.adj[s].items()
-        print(adj_n)
         next_node = min_stepped_node(G, adj_n)
         G.node[next_node]['step'] += 1
-        print("next node is " + str(next_node))
         node_colors[next_node] = 'b'
-        print("painted node number " + str(next_node-1))
-        if(c1%70==0):
-            print(c1)
-            # with_labels=True,
-            nx.draw(G,  node_color=node_colors , node_size=10)
-            plt.show()
+        #pos = nx.spring_layout(G)
+        if(c1%10==0):
+            show_graph(G)
         c1 = c1 + 1
-        print(c1)
         random_walk(G, next_node, c1)
-        return c1
-
-
-
 
 
 nodes = sorted(G.nodes())
 s = nodes[0]
-print(random_walk(G, s,0))
+random_walk(G, s,1)
 
 
 # random_walk(G)
