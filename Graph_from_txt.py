@@ -127,7 +127,7 @@ plt.show()
 
 def show_graph(G):
     # with_labels=True,
-    fig = plt.figure(figsize=(12, 12))
+    # fig = plt.figure(figsize=(12, 12))
     # ax = plt.subplot(111)
     # ax.set_title('Graph - Shapes', fontsize=10)
     nx.draw(G, node_color=node_colors, node_size=10)
