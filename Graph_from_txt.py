@@ -132,7 +132,7 @@ def show_graph(G,next_node):
     to_blue(next_node)
     nx.draw(G, pos, nodelist=node_blue_colors, node_color='r', node_size=250, alpha=0.8 , with_labels=True)
     nx.draw(G, pos, nodelist=node_red_colors, node_color='b', node_size=250, alpha=0.8, with_labels=True)
-    # nx.draw(G, pos, nodelist=node_green_color, node_color='g', node_size=250, alpha=0.8, with_labels=True)
+    nx.draw(G, pos, nodelist=[next_node], node_color='g', node_size=250, alpha=0.8, with_labels=True)
     # nx.draw(G, pos, node_color=node_colors, node_size=250, with_labels=True)
     plt.title("Random Walk")
     plt.show()
@@ -188,11 +188,9 @@ G.node[s]['step'] += 1
 show_graph(G,0)
 random_walk(G, s, 1)
 
-
 # random_walk(G)
 
 # import networkx as nx
-#
 #
 # class GraphFromTxt:
 #     def __init__(self, text, max_e):
