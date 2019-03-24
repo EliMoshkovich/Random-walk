@@ -121,13 +121,14 @@ def is_covered(G):
 # plt.show()
 
 
+pos = nx.spring_layout(G)  # positions for all nodes
 
 def show_graph(G,next_node):
     # with_labels=True,
     # fig = plt.figure(figsize=(12, 12))
     # ax = plt.subplot(111)
     # ax.set_title('Graph - Shapes', fontsize=10)
-    pos = nx.spring_layout(G)  # positions for all nodes
+
     to_blue(next_node)
     nx.draw(G, pos, nodelist=node_blue_colors, node_color='r', node_size=250, alpha=0.8 , with_labels=True)
     nx.draw(G, pos, nodelist=node_red_colors, node_color='b', node_size=250, alpha=0.8, with_labels=True)
