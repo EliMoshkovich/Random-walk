@@ -1,9 +1,15 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 from networkx import *
+import numpy
+import csv
 import drive
 import Rw
 # import pgn2gif as pg
+
+
+
+
 
 class GraphFromTxt:
     def __init__(self, text): # init from text file
@@ -144,11 +150,25 @@ def show_graph(G,next_node):
 
 
 def get_print_stepped_list(G):
-    stepped_list= []
+    stepped_list = []
     for node in sorted(G.nodes()):
         stepped_list.append(stepped(G, node))
     print(sorted(G.nodes()))
-    print(stepped_list)
+    print('coverage steps of Graph :', stepped_list)
+    # converting the list to string of integers
+    string_of_int = (', '.join(str(x) for x in stepped_list))
+
+    # write steps to csv file
+    with open('output.csv', 'a') as out:
+        out.write('\n')
+        text = "Coverage of Graph:"
+        out.write(text)
+        out.write('\n')
+        for row in string_of_int:
+            out.write('\n')
+            for col in row:
+                out.write('{0}'.format(col))
+
     return stepped_list
 
 
@@ -180,6 +200,11 @@ def random_walk(G, s, c1):
         c1 = c1 + 1
         get_print_stepped_list(G)
         random_walk(G, next_node, c1)
+
+def csv_expo(data):
+
+    a = numpy.asarray([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+    numpy.savetxt("foo.csv", a, delimiter=",")
 
 
 nodes = sorted(G.nodes())
