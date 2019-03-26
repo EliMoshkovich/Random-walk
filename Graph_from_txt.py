@@ -161,7 +161,7 @@ def get_print_stepped_list(G):
     # write steps to csv file
     with open('output.csv', 'a') as out:
         out.write('\n')
-        text = "Coverage of Graph:"
+        text = "Coverage steps of Graph:"
         out.write(text)
         out.write('\n')
         for row in string_of_int:
