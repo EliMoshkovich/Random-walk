@@ -1,7 +1,8 @@
 from drive import *
 from tkinter import *
+import ctypes
 
-# if num_of_line < 6594982:
+
 class GUI:
     def __init__(self, root, D):
 
@@ -17,80 +18,63 @@ class GUI:
         menu.add_cascade(label='File', menu=filemenu)
         helpmenu = Menu(menu, tearoff=0)
         menu.add_cascade(label='Help', menu=helpmenu)
-        helpmenu.add_command(label='About')
+        helpmenu.add_command(label='About', command=self.about)
 
         self.label = Label(root, text="Choose which Graph you would like:")
-        self.label.pack()
+        self.label.config(font=("Courier", 14))
+        self.label.grid(row=0, column=0)
 
         v = IntVar()
-        Radiobutton(root, text='Regular Graph', command=self.build_regular, variable=v, value=1).pack(anchor=W)
-        Radiobutton(root, text="Random Graph", command=self.build_random, variable=v, value=2).pack(anchor=W)
-        Radiobutton(root, text="Tree Graph", command=self.build_tree, variable=v, value=3).pack(anchor=W)
+        Radiobutton(root, text='Regular Graph', command=self.build_regular, variable=v, value=1).grid(row=1)
+        Radiobutton(root, text="Random Graph", command=self.build_random, variable=v, value=2).grid(row=2)
+        Radiobutton(root, text="Tree Graph", command=self.build_tree, variable=v, value=3).grid(row=3)
 
-        #self.randomButton = Button(root, text="Random Graph", command=self.build_random)
-        #self.randomButton.pack(side=LEFT)
+        Label(root, text="Vertices").grid(row=4)
+        Label(root, text="Edges / Degrees").grid(row=5)
 
-        #self.regularButton = Button(root, text="Regular Graph", command=self.build_regular)
-        #self.regularButton.pack(side=LEFT)
+        self.e1 = Entry(root)
+        self.e2 = Entry(root)
 
-        #self.treeButton = Button(root, text="Tree Graph", command=self.build_tree)
-        #self.treeButton.pack(side=LEFT)
+        self.e1.grid(row=4, column=1)
+        self.e2.grid(row=5, column=1)
 
-        self.textBox_v = Text(root, height=2, width=10)
-        self.textBox_v.pack(side=LEFT)
-        self.textBox_v.insert('1.0', "vertics", "vertics")
+    def about(self):
+        self.Mbox('About', 'Need to write something here', 1)
 
-        self.textBox_e = Text(root, height=2, width=15)
-        self.textBox_e.pack(side=LEFT)
-        self.textBox_e.insert('1.0', "edges \ degree", "edges")
-
-        self.textBox_msg = Text(root, height=2, width=22)
-        self.textBox_msg.pack(side=LEFT)
-        self.textBox_msg.insert('1.0', "msg to user if needed", "edges")
-
-        #print(type(self.label))
-        #print(type(self.randomButton))
-        #print(self.root)
-
+    def Mbox(self, title, text, style):
+        return ctypes.windll.user32.MessageBoxW(0, text, title, style)
 
     def p(self):
             print(self.textBox.get(1))
 
     def build_tree(self):
         try:
-            D.update_v(int(self.textBox_v.get("1.0", "end-1c")))
+            D.update_v(int(self.e1.get()))
             D.tree_graph()
         except ValueError:
-            self.textBox_msg.delete('1.0', END)
-            self.textBox_msg.insert('1.0', "pls insert 2 integers", "edges")
+            self.Mbox('Error!', 'Please insert two integers!', 1)
 
     def build_regular(self):
         try:
-            D.update_v(int(self.textBox_v.get("1.0", "end-1c")))
-            D.update_e(int(self.textBox_e.get("1.0", "end-1c")))
+            D.update_v(int(self.e1.get()))
+            D.update_e(int(self.e2.get()))
             if D.e * D.v % 2 == 0 and D.v > D.e:
                 D.regular_graph()
             elif D.e * D.v % 2 != 0:
-                print("v * e must be even")
-                self.textBox_msg.delete('1.0', END)
-                self.textBox_msg.insert('1.0', "in regular Graph v * d must be even", "edges")
+                self.Mbox('Error!', 'In Regular Graph v * d must be even!', 1)
             elif D.v <= D.e:
-                print("should be more degrees than nodes")
-                self.textBox_msg.delete('1.0', END)
-                self.textBox_msg.insert('1.0', "should be more degrees than nodes", "edges")
+                self.Mbox('Error!', 'Should be more degrees than nodes!', 1)
         except ValueError:
-            self.textBox_msg.delete('1.0', END)
-            self.textBox_msg.insert('1.0', "pls insert 2 integers", "edges")
+            self.Mbox('Error!', 'Please insert two integers!', 1)
 
     def build_random(self):
         try:
-            D.update_v(int(self.textBox_v.get("1.0", "end-1c")))
-            D.update_e(int(self.textBox_e.get("1.0", "end-1c")))
+            D.update_v(int(self.e1.get()))
+            D.update_e(int(self.e2.get()))
             D.random_graph()
 
         except ValueError:
-            self.textBox_msg.delete('1.0', END)
-            self.textBox_msg.insert('1.0', "pls insert 2 integers", "edges")
+            self.Mbox('Error!', 'Please insert two integers!', 1)
 
 
 root = Tk()

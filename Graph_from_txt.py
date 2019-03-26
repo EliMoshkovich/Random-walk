@@ -34,12 +34,14 @@ G_listed = GraphFromTxt("output_graph.txt")
 G_listed.length()
 G = G_listed.parse()
 
-node_colors = []
-for i in range(0, len(G.nodes()) ):
+node_blue_colors = []
+node_red_colors = []
+node_green_color = []
+for i in range(0, len(G.nodes())):
         if i < 1:
-           node_colors.append('b')
+           node_blue_colors.append(i)
         else:
-           node_colors.append('r')
+           node_red_colors.append(i)
 
 
 """
@@ -100,10 +102,7 @@ def min_stepped_node(G, adj):
             if(n_stepped < min_step):
                 min_step = n_stepped
                 node_index = node[0]
-
-
     return node_index
-
 
 """
 random walk algoritm
@@ -122,39 +121,76 @@ def is_covered(G):
 # plt.show()
 
 
+pos = nx.spring_layout(G)  # positions for all nodes
+
+def show_graph(G,next_node):
+    # with_labels=True,
+    # fig = plt.figure(figsize=(12, 12))
+    # ax = plt.subplot(111)
+    # ax.set_title('Graph - Shapes', fontsize=10)
+
+    to_blue(next_node)
+    nx.draw(G, pos, nodelist=node_blue_colors, node_color='r', node_size=250, alpha=0.8 , with_labels=True)
+    nx.draw(G, pos, nodelist=node_red_colors, node_color='b', node_size=250, alpha=0.8, with_labels=True)
+    nx.draw(G, pos, nodelist=[next_node], node_color='g', node_size=250, alpha=0.8, with_labels=True)
+    # nx.draw(G, pos, node_color=node_colors, node_size=250, with_labels=True)
+    plt.title("Random Walk")
+    plt.show()
+    plt.savefig('random_walk_2d.png', dpi=250)
+    # node_colors[next_node] = 'b'
+
+
+# show_graph(G, 0)
+
+
+def get_print_stepped_list(G):
+    stepped_list= []
+    for node in sorted(G.nodes()):
+        stepped_list.append(stepped(G, node))
+    print(sorted(G.nodes()))
+    print(stepped_list)
+    return stepped_list
+
+
+def to_red(n):
+    if n in node_blue_colors:
+        node_blue_colors.remove(n)
+        node_red_colors.append(n)
+
+
+def to_blue(n):
+    if n in node_red_colors:
+        node_red_colors.remove(n)
+        node_blue_colors.append(n)
+
+
+#pos = nx.spring_layout(G)
+
+
 def random_walk(G, s, c1):
     # print("random walk function")
     if not is_covered(G):
         adj_n = G.adj[s].items()
-        print(adj_n)
         next_node = min_stepped_node(G, adj_n)
+        print("next node is: "+str(next_node))
         G.node[next_node]['step'] += 1
-        print("next node is " + str(next_node))
-        node_colors[next_node] = 'b'
-        print("painted node number " + str(next_node-1))
-        if(c1%70==0):
-            print(c1)
-            # with_labels=True,
-            nx.draw(G,  node_color=node_colors , node_size=10)
-            plt.show()
+        # node_colors[next_node] = 'g'
+        # if(c1%10==0):
+        show_graph(G, next_node)
         c1 = c1 + 1
-        print(c1)
+        get_print_stepped_list(G)
         random_walk(G, next_node, c1)
-        return c1
-
-
-
 
 
 nodes = sorted(G.nodes())
 s = nodes[0]
-print(random_walk(G, s,0))
-
+G.node[s]['step'] += 1
+show_graph(G,0)
+random_walk(G, s, 1)
 
 # random_walk(G)
 
 # import networkx as nx
-#
 #
 # class GraphFromTxt:
 #     def __init__(self, text, max_e):
