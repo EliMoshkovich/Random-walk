@@ -165,11 +165,17 @@ def get_print_stepped_list(G):
         out.write(text)
         out.write('\n')
         for row in string_of_int:
-            out.write('\n')
             for col in row:
                 out.write('{0}'.format(col))
 
     return stepped_list
+
+#def print_edge_coverage(G):
+#    edge_list = []
+#    for edge in G.):
+#        edge_list.append(stepped(G, edge))
+#    print(sorted(G.edge()))
+#    print('coverage steps of Graph :', edge_list)
 
 
 def to_red(n):
@@ -199,6 +205,7 @@ def random_walk(G, s, c1):
         show_graph(G, next_node)
         c1 = c1 + 1
         get_print_stepped_list(G)
+ #       print_edge_coverage(G)
         random_walk(G, next_node, c1)
 
 def csv_expo(data):
