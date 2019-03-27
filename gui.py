@@ -1,5 +1,6 @@
 from drive import *
 from tkinter import *
+from tkinter import ttk
 import ctypes
 
 
@@ -11,6 +12,7 @@ class GUI:
 
         menu = Menu(root)
         root.config(menu=menu)
+        root.geometry("400x150+30+30")
         filemenu = Menu(menu, tearoff=0)
         filemenu.add_command(label='Open...')
         filemenu.add_separator()
@@ -20,23 +22,28 @@ class GUI:
         menu.add_cascade(label='Help', menu=helpmenu)
         helpmenu.add_command(label='About', command=self.about)
 
-        self.label = Label(root, text="Choose which Graph you would like:")
-        self.label.config(font=("Courier", 14))
-        self.label.grid(row=0, column=0)
+        label = Label(root, text="Choose which Graph you would like:")
+        label.config(font=("Courier", 14))
+        label.pack()
 
-        v = IntVar()
-        Radiobutton(root, text='Regular Graph', command=self.build_regular, variable=v, value=1).grid(row=1)
-        Radiobutton(root, text="Random Graph", command=self.build_random, variable=v, value=2).grid(row=2)
-        Radiobutton(root, text="Tree Graph", command=self.build_tree, variable=v, value=3).grid(row=3)
-
-        Label(root, text="Vertices").grid(row=4)
-        Label(root, text="Edges / Degrees").grid(row=5)
-
+        l1 = Label(root, text="Vertices")
+        l2 = Label(root, text="Edges / Degrees")
         self.e1 = Entry(root)
         self.e2 = Entry(root)
+        l1.pack(fill=X)
+        self.e1.pack()
+        l2.pack(fill=X)
+        self.e2.pack()
 
-        self.e1.grid(row=4, column=1)
-        self.e2.grid(row=5, column=1)
+        v = IntVar(0)
+        Radiobutton(root, text='Regular Graph', command=self.build_regular, variable=v, value=1, indicatoron=False).pack(side=LEFT, padx=20)
+        Radiobutton(root, text="Random Graph", command=self.build_random, variable=v, value=2, indicatoron=False).pack(side=LEFT, padx=20)
+        Radiobutton(root, text="Tree Graph", command=self.build_tree, variable=v, value=3, indicatoron=False).pack(side=LEFT, padx=20)
+
+
+
+
+        #ttk.Button(root, text="Submit", command=self.build_regular, ).pack()#grid(row=6)
 
     def about(self):
         self.Mbox('About', 'Need to write something here', 1)
