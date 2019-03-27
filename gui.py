@@ -1,5 +1,6 @@
 from drive import *
 from tkinter import *
+from tkinter import ttk
 import ctypes
 
 
@@ -8,10 +9,10 @@ class GUI:
 
         self.root = root
         root.title("Random Walk")
-
+        root.resizable(width=False, height=False)
         menu = Menu(root)
         root.config(menu=menu)
-        root.geometry("400x150+30+30")
+        root.geometry("400x150+600+300")
         filemenu = Menu(menu, tearoff=0)
         filemenu.add_command(label='Open...')
         filemenu.add_separator()
@@ -33,6 +34,7 @@ class GUI:
         self.e1.pack()
         l2.pack(fill=X)
         self.e2.pack()
+
 
         v = IntVar(0)
         Radiobutton(root, text='Regular Graph', command=self.build_regular, variable=v, value=1, indicatoron=False).pack(side=LEFT, padx=20)

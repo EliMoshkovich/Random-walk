@@ -8,9 +8,6 @@ import Rw
 # import pgn2gif as pg
 
 
-
-
-
 class GraphFromTxt:
     def __init__(self, text): # init from text file
         self.GraphStan = []
