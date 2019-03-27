@@ -1,6 +1,5 @@
 from drive import *
 from tkinter import *
-from tkinter import ttk
 import ctypes
 
 
@@ -40,10 +39,6 @@ class GUI:
         Radiobutton(root, text="Random Graph", command=self.build_random, variable=v, value=2, indicatoron=False).pack(side=LEFT, padx=20)
         Radiobutton(root, text="Tree Graph", command=self.build_tree, variable=v, value=3, indicatoron=False).pack(side=LEFT, padx=20)
 
-
-
-
-        #ttk.Button(root, text="Submit", command=self.build_regular, ).pack()#grid(row=6)
 
     def about(self):
         self.Mbox('About', 'Need to write something here', 1)
