@@ -6,6 +6,8 @@ import csv
 import drive
 import Rw
 # import pgn2gif as pg
+# from photo2gif import *
+import random
 
 
 
@@ -142,7 +144,7 @@ def show_graph(G,next_node):
     # nx.draw(G, pos, node_color=node_colors, node_size=250, with_labels=True)
     plt.title("Random Walk")
     plt.show()
-    plt.savefig('random_walk_2d.png', dpi=250)
+    plt.savefig('random_walk_'+str(next_node)+'.png', dpi=250)
     # node_colors[next_node] = 'b'
 
 
@@ -159,10 +161,10 @@ def get_print_stepped_list(G):
     string_of_int = (', '.join(str(x) for x in stepped_list))
 
     # write steps to csv file
-    with open('output.csv', 'a') as out:
+    with open('output_walks.txt', 'a') as out:
         out.write('\n')
         text = "Coverage steps of Graph:"
-        out.write(text)
+        # out.write(text)
         out.write('\n')
         for row in string_of_int:
             for col in row:
@@ -192,33 +194,44 @@ def to_blue(n):
 
 #pos = nx.spring_layout(G)
 
+def get_adj_list(adj_atlasview):
+    adj_list =[]
+    for node in adj_atlasview:
+        adj_list.append(node[0])
+    return adj_list
 
 def random_walk(G, s, c1):
     # print("random walk function")
     if not is_covered(G):
         adj_n = G.adj[s].items()
         next_node = min_stepped_node(G, adj_n)
+        adj_list = get_adj_list(adj_n)
+        next_node = random.choice(adj_list)
         print("next node is: "+str(next_node))
         G.node[next_node]['step'] += 1
         # node_colors[next_node] = 'g'
-        # if(c1%10==0):
-        show_graph(G, next_node)
+        # if(c1%5==0):
+        #show_graph(G, next_node)
         c1 = c1 + 1
         get_print_stepped_list(G)
  #       print_edge_coverage(G)
         random_walk(G, next_node, c1)
 
-def csv_expo(data):
 
+def csv_expo(data):
     a = numpy.asarray([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
-    numpy.savetxt("foo.csv", a, delimiter=",")
+    numpy.savetxt("foo.txt", a, delimiter=",")
+
 
 
 nodes = sorted(G.nodes())
 s = nodes[0]
 G.node[s]['step'] += 1
-show_graph(G,0)
+show_graph(G, 0)
 random_walk(G, s, 1)
+
+# cr = p2g()
+# cr.create()
 
 # random_walk(G)
 
