@@ -1,3 +1,5 @@
+import datetime
+
 import networkx as nx
 import matplotlib.pyplot as plt
 from networkx import *
@@ -161,7 +163,8 @@ def get_print_stepped_list(G):
     string_of_int = (', '.join(str(x) for x in stepped_list))
 
     # write steps to csv file
-    with open('output_walks.txt', 'a') as out:
+    time = str(datetime.datetime.now()).replace('.','_').replace(':','_')
+    with open('output_walks'+time+'.txt', 'a') as out:
         out.write('\n')
         text = "Coverage steps of Graph:"
         # out.write(text)
