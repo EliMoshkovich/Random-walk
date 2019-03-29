@@ -12,9 +12,6 @@ import Rw
 import random
 
 
-
-
-
 class GraphFromTxt:
     def __init__(self, text): # init from text file
         self.GraphStan = []
