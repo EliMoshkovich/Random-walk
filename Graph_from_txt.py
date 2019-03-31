@@ -1,5 +1,3 @@
-import datetime
-
 import networkx as nx
 import matplotlib.pyplot as plt
 from networkx import *
@@ -8,8 +6,6 @@ import csv
 import drive
 import Rw
 # import pgn2gif as pg
-# from photo2gif import *
-import random
 
 
 class GraphFromTxt:
@@ -136,14 +132,14 @@ def show_graph(G,next_node):
     # ax = plt.subplot(111)
     # ax.set_title('Graph - Shapes', fontsize=10)
 
-    to_blue(next_node)
+
     nx.draw(G, pos, nodelist=node_blue_colors, node_color='r', node_size=250, alpha=0.8 , with_labels=True)
     nx.draw(G, pos, nodelist=node_red_colors, node_color='b', node_size=250, alpha=0.8, with_labels=True)
     nx.draw(G, pos, nodelist=[next_node], node_color='g', node_size=250, alpha=0.8, with_labels=True)
     # nx.draw(G, pos, node_color=node_colors, node_size=250, with_labels=True)
     plt.title("Random Walk")
     plt.show()
-    plt.savefig('random_walk_'+str(next_node)+'.png', dpi=250)
+    plt.savefig('random_walk_2d.png', dpi=250)
     # node_colors[next_node] = 'b'
 
 
@@ -154,17 +150,16 @@ def get_print_stepped_list(G):
     stepped_list = []
     for node in sorted(G.nodes()):
         stepped_list.append(stepped(G, node))
-    print(sorted(G.nodes()))
-    print('coverage steps of Graph :', stepped_list)
+    # print(sorted(G.nodes()))
+    # print('coverage steps of Graph :', stepped_list)
     # converting the list to string of integers
     string_of_int = (', '.join(str(x) for x in stepped_list))
 
     # write steps to csv file
-    time = str(datetime.datetime.now()).replace('.','_').replace(':','_')
-    with open('output_walks'+time+'.txt', 'a') as out:
+    with open('output.csv', 'a') as out:
         out.write('\n')
         text = "Coverage steps of Graph:"
-        # out.write(text)
+        out.write(text)
         out.write('\n')
         for row in string_of_int:
             for col in row:
@@ -194,34 +189,28 @@ def to_blue(n):
 
 #pos = nx.spring_layout(G)
 
-def get_adj_list(adj_atlasview):
-    adj_list =[]
-    for node in adj_atlasview:
-        adj_list.append(node[0])
-    return adj_list
 
 def random_walk(G, s, c1):
     # print("random walk function")
     if not is_covered(G):
         adj_n = G.adj[s].items()
         next_node = min_stepped_node(G, adj_n)
-        adj_list = get_adj_list(adj_n)
-        next_node = random.choice(adj_list)
+        to_blue(next_node)
         print("next node is: "+str(next_node))
         G.node[next_node]['step'] += 1
         # node_colors[next_node] = 'g'
-        # if(c1%5==0):
-        #show_graph(G, next_node)
+
+        if(c1%10==0):
+            show_graph(G, next_node)
         c1 = c1 + 1
         get_print_stepped_list(G)
  #       print_edge_coverage(G)
         random_walk(G, next_node, c1)
 
-
 def csv_expo(data):
-    a = numpy.asarray([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
-    numpy.savetxt("foo.txt", a, delimiter=",")
 
+    a = numpy.asarray([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+    numpy.savetxt("foo.csv", a, delimiter=",")
 
 
 nodes = sorted(G.nodes())
@@ -229,9 +218,6 @@ s = nodes[0]
 G.node[s]['step'] += 1
 show_graph(G, 0)
 random_walk(G, s, 1)
-
-# cr = p2g()
-# cr.create()
 
 # random_walk(G)
 
