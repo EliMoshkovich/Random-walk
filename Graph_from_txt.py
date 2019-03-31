@@ -158,17 +158,16 @@ def get_print_stepped_list(G):
     string_of_int = (', '.join(str(x) for x in stepped_list))
 
     # write steps to csv file
-    with open('output_walks.txt', 'a') as out:
-        time = str(datetime.datetime.now()).replace('.', '_').replace(':', '_')
-        with open('output_walks' + time + '.txt', 'a') as out:
-            out.write('\n')
-            text = "Coverage steps of Graph:"
-            # out.write(text)
-            out.write('\n')
-            for row in string_of_int:
-                for col in row:
-                    out.write('{0}'.format(col))
-        return stepped_list
+    # time = str(datetime.datetime.now()).replace('.', '_').replace(':', '_')
+    with open('output_walks2.txt', 'a') as out:
+        out.write('\n')
+        text = "Coverage steps of Graph:"
+        # out.write(text)
+        out.write('\n')
+        for row in string_of_int:
+            for col in row:
+                out.write('{0}'.format(col))
+    return stepped_list
 
 
 #def print_edge_coverage(G):
@@ -210,6 +209,8 @@ def random_walk(G, s, c1):
         get_print_stepped_list(G)
  #       print_edge_coverage(G)
         random_walk(G, next_node, c1)
+    else:
+        get_print_stepped_list(G)
 
 def csv_expo(data):
 
