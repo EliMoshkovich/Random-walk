@@ -8,6 +8,7 @@ import csv
 import drive
 import Rw
 # import pgn2gif as pg
+from ShowGraph import ShowGraph
 
 
 class GraphFromTxt:
@@ -16,8 +17,6 @@ class GraphFromTxt:
         file = open(text, "r")
         for line in file:
             self.GraphStan.append(line)
-
-
 
     def print_list(self):
         print(self.GraphStan)
@@ -38,26 +37,8 @@ class GraphFromTxt:
 G_listed = GraphFromTxt("output_graph.txt")
 G_listed.length()
 G = G_listed.parse()
+# ShowGraph.nodes(G)
 
-node_blue_colors = []
-node_red_colors = []
-node_green_color = []
-for i in range(0, len(G.nodes())):
-        if i < 1:
-           node_blue_colors.append(i)
-        else:
-           node_red_colors.append(i)
-
-
-"""
-add colors to grapg
-https://stackoverflow.com/questions/20523327/python-and-networkx-how-to-change-the-color-of-nodes
-"""
-
-# print(node_colors)
-# nx.draw_circular(G, node_color=node_colors)
-# plt.show()
-# plt.savefig('visual graphs\\books_read2.png')
 
 """
 add field of stepped node to each node in graph.
@@ -125,26 +106,6 @@ def is_covered(G):
 # nx.draw_circular(G,  node_color=node_colors , node_size=10)
 # plt.show()
 
-
-pos = nx.spring_layout(G)  # positions for all nodes
-
-def show_graph(G,next_node):
-    # with_labels=True,
-    # fig = plt.figure(figsize=(12, 12))
-    # ax = plt.subplot(111)
-    # ax.set_title('Graph - Shapes', fontsize=10)
-
-
-    nx.draw(G, pos, nodelist=node_blue_colors, node_color='r', node_size=250, alpha=0.8 , with_labels=True)
-    nx.draw(G, pos, nodelist=node_red_colors, node_color='b', node_size=250, alpha=0.8, with_labels=True)
-    nx.draw(G, pos, nodelist=[next_node], node_color='g', node_size=250, alpha=0.8, with_labels=True)
-    # nx.draw(G, pos, node_color=node_colors, node_size=250, with_labels=True)
-    plt.title("Random Walk")
-    plt.show()
-    plt.savefig('random_walk_2d.png', dpi=250)
-    # node_colors[next_node] = 'b'
-
-
 # show_graph(G, 0)
 
 
@@ -161,7 +122,7 @@ def get_print_stepped_list(G):
     # time = str(datetime.datetime.now()).replace('.', '_').replace(':', '_')
     with open('output_walks2.txt', 'a') as out:
         out.write('\n')
-        text = "Coverage steps of Graph:"
+        # text = "Coverage steps of Graph:"
         # out.write(text)
         out.write('\n')
         for row in string_of_int:
@@ -176,35 +137,24 @@ def get_print_stepped_list(G):
 #        edge_list.append(stepped(G, edge))
 #    print(sorted(G.edge()))
 #    print('coverage steps of Graph :', edge_list)
-
-
-def to_red(n):
-    if n in node_blue_colors:
-        node_blue_colors.remove(n)
-        node_red_colors.append(n)
-
-
-def to_blue(n):
-    if n in node_red_colors:
-        node_red_colors.remove(n)
-        node_blue_colors.append(n)
-
-
 #pos = nx.spring_layout(G)
 
-
-def random_walk(G, s, c1):
+show = ShowGraph(G)
+pos = nx.spring_layout(G)  # positions for all nodes
+def random_walk(G, s, c1 ):
     # print("random walk function")
     if not is_covered(G):
         adj_n = G.adj[s].items()
         next_node = min_stepped_node(G, adj_n)
-        to_blue(next_node)
+        # to_blue(next_node)
         print("next node is: "+str(next_node))
         G.node[next_node]['step'] += 1
         # node_colors[next_node] = 'g'
-
-        if(c1%10==0):
-            show_graph(G, next_node)
+        show.to_blue(next_node)
+        # if(c1%10==0):
+        showG = show.show_graph
+        showG(G, next_node)
+            # showG(G, next_node)
         c1 = c1 + 1
         get_print_stepped_list(G)
  #       print_edge_coverage(G)
@@ -212,8 +162,8 @@ def random_walk(G, s, c1):
     else:
         get_print_stepped_list(G)
 
-def csv_expo(data):
 
+def csv_expo(data):
     a = numpy.asarray([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
     numpy.savetxt("foo.csv", a, delimiter=",")
 
@@ -221,7 +171,7 @@ def csv_expo(data):
 nodes = sorted(G.nodes())
 s = nodes[0]
 G.node[s]['step'] += 1
-show_graph(G, 0)
+# ShowGraph.show_graph(G, 0)
 random_walk(G, s, 1)
 
 # random_walk(G)
