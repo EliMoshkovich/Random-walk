@@ -12,11 +12,19 @@ from ShowGraph import ShowGraph
 
 
 class GraphFromTxt:
-    def __init__(self, text): # init from text file
+    def __init__(self): # init from text file
+        print("GraphFromTxt __init__")
         self.GraphStan = []
-        file = open(text, "r")
+        file = open("output_graph.txt", "r")
         for line in file:
             self.GraphStan.append(line)
+
+
+        # self.G_listed = GraphFromTxt("output_graph.txt")
+        self.G = GraphFromTxt.parse(self)
+        self.show = ShowGraph(self.G)
+        print("parse class")
+
 
     def print_list(self):
         print(self.GraphStan)
@@ -34,19 +42,29 @@ class GraphFromTxt:
         return nx.parse_edgelist(self.GraphStan, nodetype=int)
 
 
-G_listed = GraphFromTxt("output_graph.txt")
-G_listed.length()
-G = G_listed.parse()
-# ShowGraph.nodes(G)
 
 
-"""
-add field of stepped node to each node in graph.
-https://networkx.github.io/documentation/networkx-1.9/reference/generated/networkx.classes.function.set_node_attributes.html
-"""
 
-nx.set_node_attributes(G, 0 , 'step')
-print(sorted(G.nodes))
+
+    def run_random(self):
+
+        """
+        add field of stepped node to each node in graph.
+        https://networkx.github.io/documentation/networkx-1.9/reference/generated/networkx.classes.function.set_node_attributes.html
+        """
+        nx.set_node_attributes(self.G, 0 , 'step')
+        print(sorted(self.G.nodes))
+        nodes = sorted(self.G.nodes())
+        s = nodes[0]
+        print(self.G.node[s])
+        self.G.node[s]['step'] += 1
+
+
+        # ShowGraph.show_graph(G, 0)
+        random_walk(self, self.G, s, 1)
+        # pos = nx.spring_layout(self.G)  # positions for all nodes
+
+
 # print(G.node[2]['step'])
 # G.node[2]['step'] += 3
 # G.node[3]['step'] += 2
@@ -139,10 +157,9 @@ def get_print_stepped_list(G):
 #    print('coverage steps of Graph :', edge_list)
 #pos = nx.spring_layout(G)
 
-show = ShowGraph(G)
-pos = nx.spring_layout(G)  # positions for all nodes
-def random_walk(G, s, c1 ):
-    # print("random walk function")
+
+def random_walk(self, G, s, c1 ):
+    print("random walk function")
     if not is_covered(G):
         adj_n = G.adj[s].items()
         next_node = min_stepped_node(G, adj_n)
@@ -150,15 +167,17 @@ def random_walk(G, s, c1 ):
         print("next node is: "+str(next_node))
         G.node[next_node]['step'] += 1
         # node_colors[next_node] = 'g'
-        show.to_blue(next_node)
+        self.show.to_blue(next_node)
         # if(c1%10==0):
-        showG = show.show_graph
+        showG = self.show.show_graph
         showG(G, next_node)
             # showG(G, next_node)
         c1 = c1 + 1
+        print("c")
+        print(c1)
         get_print_stepped_list(G)
  #       print_edge_coverage(G)
-        random_walk(G, next_node, c1)
+        random_walk(self, G, next_node, c1)
     else:
         get_print_stepped_list(G)
 
@@ -168,11 +187,9 @@ def csv_expo(data):
     numpy.savetxt("foo.csv", a, delimiter=",")
 
 
-nodes = sorted(G.nodes())
-s = nodes[0]
-G.node[s]['step'] += 1
-# ShowGraph.show_graph(G, 0)
-random_walk(G, s, 1)
+
+
+
 
 # random_walk(G)
 

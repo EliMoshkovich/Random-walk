@@ -1,3 +1,8 @@
+from cgitb import text
+
+from Graph_from_txt import GraphFromTxt
+
+
 from drive import *
 from tkinter import *
 from tkinter import ttk
@@ -12,7 +17,7 @@ class GUI:
         root.resizable(width=False, height=False)
         menu = Menu(root)
         root.config(menu=menu)
-        root.geometry("400x150+600+300")
+        root.geometry("400x250+600+300")
         filemenu = Menu(menu, tearoff=0)
         filemenu.add_command(label='Open...')
         filemenu.add_separator()
@@ -35,12 +40,20 @@ class GUI:
         l2.pack(fill=X)
         self.e2.pack()
 
+        v = IntVar()
+        # Radiobutton(root, text='Regular Graph', command=self.build_regular, variable=v, value=1, indicatoron=False).pack(anchor=W)
+        # Radiobutton(root, text="Random Graph", command=self.build_random, variable=v, value=2, indicatoron=False).pack(anchor=W)
+        # Radiobutton(root, text="Tree Graph", command=self.build_tree, variable=v, value=3, indicatoron=False).pack(anchor=W, padx=20)
+        # Radiobutton(root, text='parse Graph from text', command=self.build_from_text, variable=v, value=4, indicatoron=False).pack(anchor=W)
 
-        v = IntVar(0)
-        Radiobutton(root, text='Regular Graph', command=self.build_regular, variable=v, value=1, indicatoron=False).pack(side=LEFT, padx=20)
-        Radiobutton(root, text="Random Graph", command=self.build_random, variable=v, value=2, indicatoron=False).pack(side=LEFT, padx=20)
-        Radiobutton(root, text="Tree Graph", command=self.build_tree, variable=v, value=3, indicatoron=False).pack(side=LEFT, padx=20)
+        Button(root, text='Regular Graph', command=self.build_regular).pack()
+        Button(root, text='Random Graph', command=self.build_random).pack()
+        Button(root, text='Tree Graph', command=self.build_tree).pack()
+        Button(root, text='parse Graph from text', command=self.build_from_text).pack()
 
+    def build_from_text(self):
+        parse = GraphFromTxt()
+        parse.run_random()
 
     def about(self):
         self.Mbox('About', 'Need to write something here', 1)
