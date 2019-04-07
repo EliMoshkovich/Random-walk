@@ -12,6 +12,8 @@ from ShowGraph import ShowGraph
 
 
 class GraphFromTxt:
+
+
     def __init__(self): # init from text file
         print("GraphFromTxt __init__")
         self.GraphStan = []
@@ -28,6 +30,7 @@ class GraphFromTxt:
         # print(self.G_edges)
         self.stepped_edges = [0] * len(self.G_edges)
         self.stepped_edges_remember = []
+
 
     def stepped(self, G, node_index):
     # print("node " + str(node_index) + " has stepped " + str(G.node[node_index]['step']) + " times")
@@ -68,7 +71,7 @@ class GraphFromTxt:
                 return False
         return True
 
-    def random_walk(self, G, s , c1):
+    def random_walk(self, G, s, c1):
         print("random walk function")
         print(len(G.nodes()))
 
@@ -96,6 +99,8 @@ class GraphFromTxt:
             self.stepped_edges[index] += 1
             print(self.stepped_edges)
             self.stepped_edges_remember.append(self.stepped_edges)
+            self.edges_to_csv2(self.stepped_edges)
+            print("len of mem is ", len(self.stepped_edges_remember))
             self.random_walk(G, next_node, c1)
         # else:
         #     get_print_stepped_list(G)
@@ -103,11 +108,20 @@ class GraphFromTxt:
     def edges_to_csv(self):
         # print((self.stepped_edges_remember))
         self.G_edges
-        with open("edges2.txt", "a") as f:
-            writer = csv.writer(f)
-            writer.writerow("hello ")
+        with open('csvfile2.txt', 'w') as file:
+            file.write("aaaaa")
+            print("edges_to_csv")
             print(self.stepped_edges_remember)
-            writer.writerows(self.stepped_edges_remember)
+            for line in self.stepped_edges_remember:
+                file.write(line)
+                file.write('\n')
+
+    def edges_to_csv2(self, row):
+        # print((self.stepped_edges_remember))
+        self.G_edges
+        with open('csvfile2.txt', 'a') as file:
+                file.write(str(row))
+                file.write('\n')
 
 
     def run_random(self):
