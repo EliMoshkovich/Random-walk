@@ -29,16 +29,16 @@ class ShowGraph():
     # def get_pos(self):
     #     return self.pos
     """, blue, red, _pos"""
-    def show_graph(self, G, next_node):
+    def show_graph(self, G, current_node):
         # with_labels=True,
         # fig = plt.figure(figsize=(12, 12))
         # ax = plt.subplot(111)
         # ax.set_title('Graph - Shapes', fontsize=10)
-        print(self.node_blue_colors)
-        print(self.node_red_colors)
+        # print(self.node_blue_colors)
+        # print(self.node_red_colors)
         nx.draw(G, self.pos, nodelist=self.node_blue_colors, node_color='r', node_size=250, alpha=0.8, with_labels=True)
         nx.draw(G, self.pos, nodelist=self.node_red_colors, node_color='b', node_size=250, alpha=0.8, with_labels=True)
-        nx.draw(G, self.pos, nodelist=[next_node], node_color='g', node_size=250, alpha=0.8, with_labels=True)
+        nx.draw(G, self.pos, nodelist=[current_node], node_color='g', node_size=250, alpha=0.8, with_labels=True)
 
         # nx.draw(G, pos, node_color=node_colors, node_size=250, with_labels=True)
         plt.title("Random Walk")
