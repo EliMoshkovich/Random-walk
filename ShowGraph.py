@@ -4,7 +4,7 @@ from networkx import *
 import matplotlib.pyplot as plt
 
 
-class ShowGraph():
+class ShowGraph:
 
     def __init__(self, G):
         print("init - show graph")

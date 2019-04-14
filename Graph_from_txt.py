@@ -1,7 +1,10 @@
 import datetime
 import math
+import threading
+
 import networkx as nx
 import matplotlib.pyplot as plt
+from concurrent.futures import thread
 from networkx import *
 import numpy
 import csv
@@ -11,7 +14,7 @@ import Rw
 import random
 from ShowGraph import ShowGraph
 import sys
-
+import time
 class GraphFromTxt:
 
 
@@ -86,9 +89,12 @@ class GraphFromTxt:
             G.node[next_node]['step'] += 1
             # node_colors[next_node] = 'g'
             self.show.to_blue(next_node)
-            if (c1 % mod == 0.9): #freddy
-                showG = self.show.show_graph
-                showG(G, next_node)
+            if (c1 % mod == 1): #freddy
+                try:
+                    showG = self.show.show_graph
+                    showG(G, next_node)
+                except:
+                    print (" ")
                 # showG(G, next_node)
             c1 = c1 + 1
             print("c")
@@ -142,7 +148,10 @@ class GraphFromTxt:
 
         # ShowGraph.show_graph(G, 0)
         sys.setrecursionlimit(10000) # https://stackoverflow.com/questions/6809402/python-maximum-recursion-depth-exceeded-while-calling-a-python-object
-        self.random_walk(self.G, 0, 1)
+        #thread.start_new_thread(self.random_walk, (self.G, 0, 1, ))
+        t = threading.Thread(target=self.random_walk, args=(self.G, 0, 1, ))
+        t.start()
+        # self.random_walk(self.G, 0, 1)
         # write_to_csv()
         # pos = nx.spring_layout(self.G)  # positions for all nodes
 
