@@ -85,7 +85,7 @@ class GraphFromTxt:
             G.node[next_node]['step'] += 1
             # node_colors[next_node] = 'g'
             self.show.to_blue(next_node)
-            if (c1 % mod == 0.9):
+            if (c1 % mod == 1): #freddy
                 showG = self.show.show_graph
                 showG(G, next_node)
                 # showG(G, next_node)
