@@ -1,5 +1,3 @@
-# from gui import *
-
 from networkx import *
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -43,12 +41,6 @@ class Drive:
         plt.show()
 
 
-
-
-# a = Drive()
-# print(a.v)
-# a.update_v(14)
-# print(a.v)
 
 
 

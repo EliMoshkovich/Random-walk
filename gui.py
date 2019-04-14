@@ -1,13 +1,6 @@
-from cgitb import text
-
-from concurrent.futures import thread
-
 from Graph_from_txt import GraphFromTxt
-
-
 from drive import *
 from tkinter import *
-from tkinter import ttk
 import ctypes
 
 
@@ -21,7 +14,7 @@ class GUI:
         root.config(menu=menu)
         root.geometry("400x250+600+300")
         filemenu = Menu(menu, tearoff=0)
-        filemenu.add_command(label='Open...')
+        filemenu.add_command(label='Open...', command=self.build_from_text)
         filemenu.add_separator()
         filemenu.add_command(label='Exit', command=root.quit)
         menu.add_cascade(label='File', menu=filemenu)
@@ -42,23 +35,19 @@ class GUI:
         l2.pack(fill=X)
         self.e2.pack()
 
-        v = IntVar()
-        # Radiobutton(root, text='Regular Graph', command=self.build_regular, variable=v, value=1, indicatoron=False).pack(anchor=W)
-        # Radiobutton(root, text="Random Graph", command=self.build_random, variable=v, value=2, indicatoron=False).pack(anchor=W)
-        # Radiobutton(root, text="Tree Graph", command=self.build_tree, variable=v, value=3, indicatoron=False).pack(anchor=W, padx=20)
-        # Radiobutton(root, text='parse Graph from text', command=self.build_from_text, variable=v, value=4, indicatoron=False).pack(anchor=W)
-
-        Button(root, text='Regular Graph', command=self.build_regular).pack()
-        Button(root, text='Random Graph', command=self.build_random).pack()
-        Button(root, text='Tree Graph', command=self.build_tree).pack()
-        Button(root, text='parse Graph from text', command=self.build_from_text).pack()
+        Button(root, text='Regular Graph', command=self.build_regular).pack(fill="none", expand=True)
+        Button(root, text='Random Graph', command=self.build_random).pack(fill="none", expand=True)
+        Button(root, text='Tree Graph', command=self.build_tree).pack(fill="none", expand=True)
 
     def build_from_text(self):
         parse = GraphFromTxt()
         parse.run_random()
 
     def about(self):
-        self.Mbox('About', 'Need to write something here', 1)
+        self.Mbox('About', 'Hi and welcome to our Project!\n'
+                           'In here you will find our Random Walk project and can choose in which graph you would like to run.\n'
+                           'You can build a tree, a regular graph and a random one.\n'
+                            'After that just choose File-->Open and it will open your last built Graph.', 1)
 
     def Mbox(self, title, text, style):
         return ctypes.windll.user32.MessageBoxW(0, text, title, style)

@@ -1,10 +1,5 @@
-import datetime
 import math
 import threading
-
-import networkx as nx
-import matplotlib.pyplot as plt
-from concurrent.futures import thread
 from networkx import *
 import numpy
 import csv
@@ -14,30 +9,26 @@ import Rw
 import random
 from ShowGraph import ShowGraph
 import sys
-import time
+
+
 class GraphFromTxt:
 
-
     def __init__(self): # init from text file
-        print("GraphFromTxt __init__")
+        #print("GraphFromTxt __init__")
         self.GraphStan = []
         file = open("output_graph.txt", "r")
         for line in file:
             self.GraphStan.append(line)
-
-
         # self.G_listed = GraphFromTxt("output_graph.txt")
         self.G = GraphFromTxt.parse(self)
         self.show = ShowGraph(self.G)
-        print("parse class")
+        #print("parse class")
         self.G_edges = sorted(self.G.edges())
         # print(self.G_edges)
         self.stepped_edges = [0] * len(self.G_edges)
         self.stepped_edges_remember = []
 
-
     def stepped(self, G, node_index):
-    # print("node " + str(node_index) + " has stepped " + str(G.node[node_index]['step']) + " times")
         return G.node[node_index]['step']
 
     def print_list(self):
@@ -67,7 +58,6 @@ class GraphFromTxt:
 
         return -1
 
-
     def is_covered(self, G):
         nodes = sorted(G.nodes())
         for node in nodes:
@@ -76,16 +66,15 @@ class GraphFromTxt:
         return True
 
     def random_walk(self, G, s, c1):
-        print("random walk function")
-        print(len(G.nodes()))
-
+        #print("random walk function")
+        #print(len(G.nodes()))
         if not self.is_covered(G):
             mod = int(math.sqrt(len(G.nodes())))
             # print(int(mod))
             adj_n = G.adj[s].items()
             next_node = self.min_stepped_node(G, adj_n)
             # to_blue(next_node)
-            print("next node is: " + str(next_node))
+            #print("next node is: " + str(next_node))
             G.node[next_node]['step'] += 1
             # node_colors[next_node] = 'g'
             self.show.to_blue(next_node)
@@ -97,17 +86,17 @@ class GraphFromTxt:
                     print (" ")
                 # showG(G, next_node)
             c1 = c1 + 1
-            print("c")
-            print(c1)
+            #print("c")
+            #print(c1)
             self.get_print_stepped_list(G)
             #       print_edge_coverage(G)
             index = self.get_index_of_edge(s, next_node)
-            print("index ", index)
+            #print("index ", index)
             self.stepped_edges[index] += 1
-            print(self.stepped_edges)
+            #print(self.stepped_edges)
             self.stepped_edges_remember.append(self.stepped_edges)
             self.edges_to_csv2(self.stepped_edges)
-            print("len of mem is ", len(self.stepped_edges_remember))
+            #print("len of mem is ", len(self.stepped_edges_remember))
             self.random_walk(G, next_node, c1)
         # else:
         #     get_print_stepped_list(G)
@@ -143,7 +132,7 @@ class GraphFromTxt:
         s = nodes[0]
         # print(self.G.node[s])
         self.G.node[s]['step'] += 1
-        print(self.G_edges)
+        #print(self.G_edges)
         self.edges_to_csv()
 
         # ShowGraph.show_graph(G, 0)
@@ -180,23 +169,7 @@ tree test
             for node in adj:
                 arr.append(node[0])
             node_index = arr[random.randint(0, len(adj) - 1)]
-            """min_step = 0
-            node_index = 0
-            for node in adj:  # init min_step
-                min_step = self.stepped(G, node[0])
-                node_index = node[0]
-                break
-
-            for node in adj:
-                n_stepped = self.stepped(G, node[0])
-                if(n_stepped < min_step):
-                    min_step = n_stepped
-                    node_index = node[0]"""
         return node_index
-
-
-
-
 
     # nx.draw_circular(G,  node_color=node_colors , node_size=10)
     # plt.show()
