@@ -8,6 +8,7 @@ import csv
 import drive
 import Rw
 # import pgn2gif as pg
+import random
 from ShowGraph import ShowGraph
 
 
@@ -85,9 +86,9 @@ class GraphFromTxt:
             G.node[next_node]['step'] += 1
             # node_colors[next_node] = 'g'
             self.show.to_blue(next_node)
-            if (c1 % mod == 1): #freddy
-                showG = self.show.show_graph
-                showG(G, next_node)
+            #if (c1 % mod == 1): #freddy
+            showG = self.show.show_graph
+            showG(G, next_node)
                 # showG(G, next_node)
             c1 = c1 + 1
             print("c")
@@ -165,7 +166,11 @@ tree test
 
     def min_stepped_node(self, G, adj):
         if len(adj) > 0:
-            min_step = 0
+            arr = []
+            for node in adj:
+                arr.append(node[0])
+            node_index = arr[random.randint(0, len(adj) - 1)]
+            """min_step = 0
             node_index = 0
             for node in adj:  # init min_step
                 min_step = self.stepped(G, node[0])
@@ -176,7 +181,7 @@ tree test
                 n_stepped = self.stepped(G, node[0])
                 if(n_stepped < min_step):
                     min_step = n_stepped
-                    node_index = node[0]
+                    node_index = node[0]"""
         return node_index
 
 
