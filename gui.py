@@ -41,7 +41,8 @@ class GUI:
 
     def build_from_text(self):
         parse = GraphFromTxt()
-        parse.run_random()
+        steps = parse.run_random()
+        #print("The number of steps:", steps)
 
     def about(self):
         self.Mbox('About', 'Hi and welcome to our Project!\n'

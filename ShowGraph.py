@@ -42,8 +42,10 @@ class ShowGraph:
 
         # nx.draw(G, pos, node_color=node_colors, node_size=250, with_labels=True)
         plt.title("Random Walk")
-        plt.show()
+        plt.show(block=False)
         plt.savefig('random_walk_2d.png', dpi=250)
+        plt.pause(2)
+        plt.close()
         # node_colors[next_node] = 'b'
 
 

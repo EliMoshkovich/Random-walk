@@ -11,7 +11,9 @@ class Drive:
         print("init drive")
 
     def regular_graph(self):
-        draw(random_regular_graph(self.e, self.v))
+        G = random_regular_graph(self.e, self.v)
+        self.wr(G)
+        draw(G)
         plt.show()
 
     def tree_graph(self):

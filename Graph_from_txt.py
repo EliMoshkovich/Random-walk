@@ -1,3 +1,4 @@
+import ctypes
 import math
 import threading
 from networkx import *
@@ -65,7 +66,7 @@ class GraphFromTxt:
                 return False
         return True
 
-    def random_walk(self, G, s, c1):
+    def random_walk(self, G, s, counter):
         #print("random walk function")
         #print(len(G.nodes()))
         if not self.is_covered(G):
@@ -78,14 +79,14 @@ class GraphFromTxt:
             G.node[next_node]['step'] += 1
             # node_colors[next_node] = 'g'
             self.show.to_blue(next_node)
-            if (c1 % mod == 1): #freddy
+            if (counter % mod == 1):
                 try:
                     showG = self.show.show_graph
                     showG(G, next_node)
                 except:
                     print (" ")
                 # showG(G, next_node)
-            c1 = c1 + 1
+            counter = counter + 1
             #print("c")
             #print(c1)
             self.get_print_stepped_list(G)
@@ -97,7 +98,7 @@ class GraphFromTxt:
             self.stepped_edges_remember.append(self.stepped_edges)
             self.edges_to_csv2(self.stepped_edges)
             #print("len of mem is ", len(self.stepped_edges_remember))
-            self.random_walk(G, next_node, c1)
+            self.random_walk(G, next_node, counter)
         # else:
         #     get_print_stepped_list(G)
 
@@ -119,7 +120,6 @@ class GraphFromTxt:
                 file.write(str(row))
                 file.write('\n')
 
-
     def run_random(self):
 
         """
@@ -134,34 +134,19 @@ class GraphFromTxt:
         self.G.node[s]['step'] += 1
         #print(self.G_edges)
         self.edges_to_csv()
-
         # ShowGraph.show_graph(G, 0)
         sys.setrecursionlimit(10000) # https://stackoverflow.com/questions/6809402/python-maximum-recursion-depth-exceeded-while-calling-a-python-object
         #thread.start_new_thread(self.random_walk, (self.G, 0, 1, ))
-        t = threading.Thread(target=self.random_walk, args=(self.G, 0, 1, ))
+        countOfSteps = 1
+        t = threading.Thread(target=self.random_walk, args=(self.G, 0, 1))
         t.start()
+        #return countOfSteps
         # self.random_walk(self.G, 0, 1)
         # write_to_csv()
         # pos = nx.spring_layout(self.G)  # positions for all nodes
 
-# print(G.node[2]['step'])
-# G.node[2]['step'] += 3
-# G.node[3]['step'] += 2
-# G.node[4]['step'] += 1
-# print(G.node[2]['step'])
-
-        """
-tree test 
-
-
-
-    
-    
-    
-    param: list of nodes num
-    return : node with lowest stepped times 
-    """
-
+    def Mbox(self, title, text, style):
+        return ctypes.windll.user32.MessageBoxW(0, text, title, style)
 
     def min_stepped_node(self, G, adj):
         if len(adj) > 0:
@@ -198,7 +183,6 @@ tree test
                 for col in row:
                     out.write('{0}'.format(col))
         return stepped_list
-
 
 
     # def get_print_stepped_list(G):
