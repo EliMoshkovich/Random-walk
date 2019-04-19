@@ -11,6 +11,8 @@ import random
 from ShowGraph import ShowGraph
 import sys
 
+global countOfSteps
+
 
 class GraphFromTxt:
 
@@ -66,7 +68,7 @@ class GraphFromTxt:
                 return False
         return True
 
-    def random_walk(self, G, s, counter):
+    def random_walk(self, G, s, countOfSteps):
         #print("random walk function")
         #print(len(G.nodes()))
         if not self.is_covered(G):
@@ -79,14 +81,14 @@ class GraphFromTxt:
             G.node[next_node]['step'] += 1
             # node_colors[next_node] = 'g'
             self.show.to_blue(next_node)
-            if (counter % mod == 1):
+            if (countOfSteps % mod == 1):
                 try:
                     showG = self.show.show_graph
                     showG(G, next_node)
                 except:
                     print (" ")
                 # showG(G, next_node)
-            counter = counter + 1
+            countOfSteps = countOfSteps + 1
             #print("c")
             #print(c1)
             self.get_print_stepped_list(G)
@@ -98,7 +100,8 @@ class GraphFromTxt:
             self.stepped_edges_remember.append(self.stepped_edges)
             self.edges_to_csv2(self.stepped_edges)
             #print("len of mem is ", len(self.stepped_edges_remember))
-            self.random_walk(G, next_node, counter)
+            self.random_walk(G, next_node, countOfSteps)
+        print("num of", countOfSteps)
         # else:
         #     get_print_stepped_list(G)
 
@@ -106,7 +109,7 @@ class GraphFromTxt:
         # print((self.stepped_edges_remember))
         self.G_edges
         with open('csvfile2.txt', 'w') as file:
-            file.write("aaaaa")
+            #file.write("aaaaa")
             print("edges_to_csv")
             print(self.stepped_edges_remember)
             for line in self.stepped_edges_remember:
@@ -121,7 +124,6 @@ class GraphFromTxt:
                 file.write('\n')
 
     def run_random(self):
-
         """
         add field of stepped node to each node in graph.
         https://networkx.github.io/documentation/networkx-1.9/reference/generated/networkx.classes.function.set_node_attributes.html
@@ -138,8 +140,10 @@ class GraphFromTxt:
         sys.setrecursionlimit(10000) # https://stackoverflow.com/questions/6809402/python-maximum-recursion-depth-exceeded-while-calling-a-python-object
         #thread.start_new_thread(self.random_walk, (self.G, 0, 1, ))
         countOfSteps = 1
-        t = threading.Thread(target=self.random_walk, args=(self.G, 0, 1))
+        t = threading.Thread(target=self.random_walk, args=(self.G, 0, countOfSteps))
         t.start()
+        t.join()
+        print("This is the steps:", countOfSteps)
         #return countOfSteps
         # self.random_walk(self.G, 0, 1)
         # write_to_csv()
