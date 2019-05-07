@@ -1,35 +1,25 @@
 import ctypes
 import math
 import threading
-
 import xlrd as xlrd
 from networkx import *
 import numpy
-import csv
-import drive
-import Rw
-# import pgn2gif as pg
 import random
 from ShowGraph import ShowGraph
 import sys
 from xlutils.copy import copy
-from multiprocessing.pool import ThreadPool
 
 
 class GraphFromTxt:
 
-    def __init__(self): # init from text file
-        #print("GraphFromTxt __init__")
+    def __init__(self):
         self.GraphStan = []
         file = open("output_graph.txt", "r")
         for line in file:
             self.GraphStan.append(line)
-        # self.G_listed = GraphFromTxt("output_graph.txt")
         self.G = GraphFromTxt.parse(self)
         self.show = ShowGraph(self.G)
-        #print("parse class")
         self.G_edges = sorted(self.G.edges())
-        # print(self.G_edges)
         self.stepped_edges = [0] * len(self.G_edges)
         self.stepped_edges_remember = []
 
@@ -54,7 +44,6 @@ class GraphFromTxt:
     def get_index_of_edge(self, node1, node2):
         for i in range(len(self.G_edges)):
             edge = self.G_edges[i]
-            # print(edge[0], node1 , " " , edge[1] , node2)
             if edge[0] == node1 and edge[1] == node2:
                 return i
 
@@ -80,40 +69,30 @@ class GraphFromTxt:
                 return False
         return True
 
-    def random_walk(self, G, s, count_steps):
-        #print("random walk function")
-        #print(len(G.nodes()))
+    def random_walk(self, G, s, count_steps, show_graph):
         if not self.is_covered(G):
             mod = int(math.sqrt(len(G.nodes())))
             # print(int(mod))
             adj_n = G.adj[s].items()
             next_node = self.min_stepped_node(G, adj_n)
-            # to_blue(next_node)
-            #print("next node is: " + str(next_node))
             G.node[next_node]['step'] += 1
-            # node_colors[next_node] = 'g'
             self.show.to_blue(next_node)
             # show the graph
-            """if (countOfSteps % mod == 1): 
-                try:
-                    showG = self.show.show_graph
-                    showG(G, next_node)
-                except:
-                    print (" ")
-                # showG(G, next_node)"""
+            if show_graph == 1:
+                if count_steps % mod == 1:
+                    try:
+                        showG = self.show.show_graph
+                        showG(G, next_node)
+                    except:
+                        print(" ")
+                # showG(G, next_node)
             count_steps = count_steps + 1
-            #print("c")
-            #print(c1)
             self.get_print_stepped_list(G)  # write steppes nodes to csv
-            #       print_edge_coverage(G)
             index = self.get_index_of_edge(s, next_node)
-            #print("index ", index)
             self.stepped_edges[index] += 1
-            #print(self.stepped_edges)
             self.stepped_edges_remember.append(self.stepped_edges)
             self.edges_to_csv2(self.stepped_edges)
-            #print("len of mem is ", len(self.stepped_edges_remember))
-            self.random_walk(G, next_node, count_steps)
+            self.random_walk(G, next_node, count_steps, show_graph)
         else:
             global counter
             counter = count_steps
@@ -138,7 +117,7 @@ class GraphFromTxt:
                 file.write(str(row))
                 file.write('\n')
 
-    def run_random(self):
+    def run_random(self, show_graph):
         """
         add field of stepped node to each node in graph.
         https://networkx.github.io/documentation/networkx-1.9/reference/generated/networkx.classes.function.set_node_attributes.html
@@ -154,10 +133,10 @@ class GraphFromTxt:
         # ShowGraph.show_graph(G, 0)
         sys.setrecursionlimit(10000) # https://stackoverflow.com/questions/6809402/python-maximum-recursion-depth-exceeded-while-calling-a-python-object
         #thread.start_new_thread(self.random_walk, (self.G, 0, 1, ))
-        t = threading.Thread(target=self.random_walk, args=(self.G, 0, 1))
+        t = threading.Thread(target=self.random_walk, args=(self.G, 0, 1, show_graph))
         t.start()
         t.join()
-        self.get_steps_to_nodes(self.G)
+        #self.get_steps_to_nodes(self.G)
         print("the end")
         #self.Mbox('Conclusion', 'The number of steps is:' + str(counter), 1)
         # self.random_walk(self.G, 0, 1)
@@ -174,13 +153,6 @@ class GraphFromTxt:
                 arr.append(node[0])
             node_index = arr[random.randint(0, len(adj) - 1)]
         return node_index
-
-    # nx.draw_circular(G,  node_color=node_colors , node_size=10)
-    # plt.show()
-
-    # show_graph(G, 0)
-
-    # steps_memory = []  # save all configurations of steps
 
     def get_steps_to_nodes(self, G):
         #book = xlwt.Workbook()
@@ -203,13 +175,10 @@ class GraphFromTxt:
         stepped_list = []
         for node in sorted(G.nodes()):
             stepped_list.append(self.stepped(G, node))
-        # print(sorted(G.nodes()))
-        # print('coverage steps of Graph :', stepped_list)
         # converting the list to string of integers
         string_of_int = (', '.join(str(x) for x in stepped_list))
 
         # write steps to csv file
-        # time = str(datetime.datetime.now()).replace('.', '_').replace(':', '_')
         with open('output_walks2.txt', 'a') as out:
             out.write('\n')
             # text = "Coverage steps of Graph:"
@@ -219,79 +188,6 @@ class GraphFromTxt:
                 for col in row:
                     out.write('{0}'.format(col))
         return stepped_list
-
-
-    # def get_print_stepped_list(G):
-    #     stepped_list = []
-    #     for node in sorted(G.nodes()):
-    #         stepped_list.append(stepped(G, node))
-    #     # print(sorted(G.nodes()))
-    #     # print('coverage steps of Graph :', stepped_list)
-    #     # converting the list to string of integers
-    #     string_of_int = (', '.join(str(x) for x in stepped_list))
-    #     steps_memory.append(string_of_int)
-    #     # write steps to csv file
-    #     # time = str(datetime.datetime.now()).replace('.', '_').replace(':', '_')
-    #     return stepped_list
-    #
-    #
-    # def write_to_csv():
-    #     with open('output_walks3.txt', 'a') as out:
-    #         out.write("Coverage steps of Graph:")
-    #         out.write('\n')
-    #         for string_of_int in steps_memory:
-    #             for row in string_of_int:
-    #                 for col in row:
-    #                     out.write('{0}'.format(col))
-
-
-    #def print_edge_coverage(G):
-    #    edge_list = []
-    #    for edge in G.):
-    #        edge_list.append(stepped(G, edge))
-    #    print(sorted(G.edge()))
-    #    print('coverage steps of Graph :', edge_list)
-    #pos = nx.spring_layout(G)
-
-    def csv_expo(data):
-        a = numpy.asarray([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
-        numpy.savetxt("foo.csv", a, delimiter=",")
-
-
-    # random_walk(G)
-
-    # import networkx as nx
-    #
-    # class GraphFromTxt:
-    #     def __init__(self, text, max_e):
-    #         self.m=max_e
-    #         self.GraphStan = []
-    #         file = open(text, "r")
-    #         for line in file:
-    #             self.GraphStan.append(line)
-    #
-    #     def print_list(self):
-    #         print(self.GraphStan)
-    #
-    #     def length(self):
-    #         print(self.GraphStan.__len__())
-    #
-    #     def print_edges(self, G):
-    #         print(G.edges())
-    #
-    #     def parse(self):
-    #         integers = [x for x in self.GraphStan if (x, int)]
-    #         integers = integers[-self.m:]
-    #         print(integers.__len__())
-    #         return nx.parse_edgelist(integers, nodetype=int)
-    #
-    #
-    # max_e = 4800000
-    # for x in range(max_e, 7600595, 3):
-    #     G = GraphFromTxt("stan.txt", max_e)
-    #     G.lenth()
-    #     a = G.parse()
-
 
 
 ## https://networkx.github.io/documentation/networkx-1.9/reference/generated/networkx.classes.function.density.html

@@ -34,14 +34,17 @@ class GUI:
         self.e1.pack()
         l2.pack(fill=X)
         self.e2.pack()
-
+        global show_graph
+        show_graph = IntVar()
+        c = Checkbutton(root, text="Show Graph", variable=show_graph, onvalue=1, offvalue=0)
+        c.pack()
         Button(root, text='Regular Graph', command=self.build_regular).pack(fill="none", expand=True)
         Button(root, text='Random Graph', command=self.build_random).pack(fill="none", expand=True)
         Button(root, text='Tree Graph', command=self.build_tree).pack(fill="none", expand=True)
 
     def build_from_text(self):
         parse = GraphFromTxt()
-        steps = parse.run_random()
+        steps = parse.run_random(show_graph.get())
         #print("The number of steps:", steps)
 
     def about(self):
