@@ -26,8 +26,8 @@ class GUI:
         label.config(font=("Courier", 14))
         label.pack()
 
-        l1 = Label(root, text="Vertices")
-        l2 = Label(root, text="Edges / Degrees")
+        l1 = Label(root, text="Nodes")
+        l2 = Label(root, text="Edges")
         self.e1 = Entry(root)
         self.e2 = Entry(root)
         l1.pack(fill=X)
@@ -50,8 +50,8 @@ class GUI:
     def about(self):
         self.Mbox('About', 'Hi and welcome to our Project!\n'
                            'In here you will find our Random Walk project and can choose in which graph you would like to run.\n'
-                           'You can build a tree, a regular graph and a random one.\n'
-                            'After that just choose File-->Open and it will open your last built Graph.', 1)
+                           'You can build a tree, a regular graph and a random graph.\n'
+                            'After that just choose File-->Open and it will open your last built Graph and run random walk on it.', 1)
 
     def Mbox(self, title, text, style):
         return ctypes.windll.user32.MessageBoxW(0, text, title, style)

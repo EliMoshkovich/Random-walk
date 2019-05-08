@@ -52,7 +52,6 @@ class GraphFromTxt:
 
         return -1
 
-
     def get_steeped_node_list(self):
         stepped_node_list = []
         nodes = sorted(self.G.nodes)
@@ -87,7 +86,7 @@ class GraphFromTxt:
                         print(" ")
                 # showG(G, next_node)
             count_steps = count_steps + 1
-            self.get_print_stepped_list(G)  # write steppes nodes to csv
+            #self.get_print_stepped_list(G)  # write steppes nodes to csv
             index = self.get_index_of_edge(s, next_node)
             self.stepped_edges[index] += 1
             self.stepped_edges_remember.append(self.stepped_edges)
@@ -96,8 +95,8 @@ class GraphFromTxt:
         else:
             global counter
             counter = count_steps
-        # else:
-        #     get_print_stepped_list(G)
+            #self.get_print_stepped_list(G)  # write steppes nodes to csv
+
 
     def edges_to_csv(self):
         # print((self.stepped_edges_remember))
@@ -136,7 +135,7 @@ class GraphFromTxt:
         t = threading.Thread(target=self.random_walk, args=(self.G, 0, 1, show_graph))
         t.start()
         t.join()
-        #self.get_steps_to_nodes(self.G)
+        self.get_steps_to_nodes(self.G)
         print("the end")
         #self.Mbox('Conclusion', 'The number of steps is:' + str(counter), 1)
         # self.random_walk(self.G, 0, 1)
