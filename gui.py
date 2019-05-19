@@ -3,10 +3,9 @@ from drive import *
 from tkinter import *
 import ctypes
 
-
+# This is the gui class. Here we init all the gui and start the project.
 class GUI:
     def __init__(self, root, D):
-
         self.root = root
         root.title("Random Walk")
         root.resizable(width=False, height=False)
@@ -42,11 +41,14 @@ class GUI:
         Button(root, text='Random Graph', command=self.build_random).pack(fill="none", expand=True)
         Button(root, text='Tree Graph', command=self.build_tree).pack(fill="none", expand=True)
 
+    # Here we init the random walk from our most recent graph.
     def build_from_text(self):
         parse = GraphFromTxt()
         steps = parse.run_random(show_graph.get())
-        #print("The number of steps:", steps)
+        #self.Mbox('Done!', "Number of steps: " + str(steps) + "\nNumber of nodes: " + self.e1.get() + "\nThe density of the graph: " + density(parse), 1)
 
+
+    # This is the about pop up.
     def about(self):
         self.Mbox('About', 'Hi and welcome to our Project!\n'
                            'In here you will find our Random Walk project and can choose in which graph you would like to run.\n'
@@ -55,9 +57,6 @@ class GUI:
 
     def Mbox(self, title, text, style):
         return ctypes.windll.user32.MessageBoxW(0, text, title, style)
-
-    def p(self):
-            print(self.textBox.get(1))
 
     def build_tree(self):
         try:

@@ -9,7 +9,7 @@ from ShowGraph import ShowGraph
 import sys
 from xlutils.copy import copy
 
-
+# This class is for the random walk on the given graph.
 class GraphFromTxt:
 
     def __init__(self):
@@ -23,24 +23,19 @@ class GraphFromTxt:
         self.stepped_edges = [0] * len(self.G_edges)
         self.stepped_edges_remember = []
 
+    # How much are stepped.
     def stepped(self, G, node_index):
         return G.node[node_index]['step']
 
-    def print_list(self):
-        print(self.GraphStan)
-
-    def length(self):
-        print("num of nodes is: " + str(self.GraphStan.__len__()))
-
-    def length_int(self):
-        return self.GraphStan.__len__()
-
+    # Print the edges.
     def print_edges(self, G):
         print(G.edges())
 
+    # Parse the graph.
     def parse(self):
         return nx.parse_edgelist(self.GraphStan, nodetype=int)
 
+    # Get the index out of the graph.
     def get_index_of_edge(self, node1, node2):
         for i in range(len(self.G_edges)):
             edge = self.G_edges[i]
@@ -52,6 +47,7 @@ class GraphFromTxt:
 
         return -1
 
+    # Get the list stepped.
     def get_steeped_node_list(self):
         stepped_node_list = []
         nodes = sorted(self.G.nodes)
@@ -61,6 +57,7 @@ class GraphFromTxt:
 
         return stepped_node_list
 
+    # Check if the graph is already covered.
     def is_covered(self, G):
         nodes = sorted(G.nodes())
         for node in nodes:
@@ -68,6 +65,7 @@ class GraphFromTxt:
                 return False
         return True
 
+    # This is the main function of the random walk, runs recursively.
     def random_walk(self, G, s, count_steps, show_graph):
         if not self.is_covered(G):
             mod = int(math.sqrt(len(G.nodes())))
@@ -84,7 +82,6 @@ class GraphFromTxt:
                         showG(G, next_node)
                     except:
                         print(" ")
-                # showG(G, next_node)
             count_steps = count_steps + 1
             #self.get_print_stepped_list(G)  # write steppes nodes to csv
             index = self.get_index_of_edge(s, next_node)
@@ -97,7 +94,7 @@ class GraphFromTxt:
             counter = count_steps
             #self.get_print_stepped_list(G)  # write steppes nodes to csv
 
-
+    # This function prints to a csv the number of steps for each edge.
     def edges_to_csv(self):
         # print((self.stepped_edges_remember))
         self.G_edges
@@ -109,6 +106,7 @@ class GraphFromTxt:
                 file.write(line)
                 file.write('\n')
 
+    # This function prints to a csv the number of steps for each edge.
     def edges_to_csv2(self, row):
         # print((self.stepped_edges_remember))
         self.G_edges
@@ -116,35 +114,26 @@ class GraphFromTxt:
                 file.write(str(row))
                 file.write('\n')
 
+    # This is the function to control the random walk with a new thread.
     def run_random(self, show_graph):
-        """
-        add field of stepped node to each node in graph.
-        https://networkx.github.io/documentation/networkx-1.9/reference/generated/networkx.classes.function.set_node_attributes.html
-        """
         nx.set_node_attributes(self.G, 0, 'step')
-        # print(sorted(self.G.nodes))
         nodes = sorted(self.G.nodes())
         s = nodes[0]
         # print(self.G.node[s])
         self.G.node[s]['step'] += 1
-        #print(self.G_edges)
-        self.edges_to_csv()
-        # ShowGraph.show_graph(G, 0)
         sys.setrecursionlimit(10000) # https://stackoverflow.com/questions/6809402/python-maximum-recursion-depth-exceeded-while-calling-a-python-object
-        #thread.start_new_thread(self.random_walk, (self.G, 0, 1, ))
         t = threading.Thread(target=self.random_walk, args=(self.G, 0, 1, show_graph))
         t.start()
         t.join()
-        self.get_steps_to_nodes(self.G)
-        print("the end")
-        #self.Mbox('Conclusion', 'The number of steps is:' + str(counter), 1)
-        # self.random_walk(self.G, 0, 1)
+        self.Mbox('Done!', "Number of steps: " + str(counter) + "\nNumber of nodes: " + str(len(nodes)) + "\nThe density of the graph: " + str(density(self.G)), 1)
+        return counter
         # write_to_csv()
-        # pos = nx.spring_layout(self.G)  # positions for all nodes
 
+    # The pop up function.
     def Mbox(self, title, text, style):
         return ctypes.windll.user32.MessageBoxW(0, text, title, style)
 
+    # Check the next node from a given node randomly.
     def min_stepped_node(self, G, adj):
         if len(adj) > 0:
             arr = []
@@ -153,9 +142,8 @@ class GraphFromTxt:
             node_index = arr[random.randint(0, len(adj) - 1)]
         return node_index
 
+    # This function prints to a csv how many steps it made according to number of nodes.
     def get_steps_to_nodes(self, G):
-        #book = xlwt.Workbook()
-        #sh = book.add_sheet("Sheet 1")
         global counter
         rb = xlrd.open_workbook('steps_to_nodes.xls', formatting_info=True)
         sheet = rb.sheet_by_index(0)
@@ -163,30 +151,23 @@ class GraphFromTxt:
         sh = wb.get_sheet(0)
         sh.write(sheet.nrows, 0, len(G.nodes))
         sh.write(sheet.nrows, 1, counter)
-        #book.save("steps_to_nodes.xls")
         wb.save('steps_to_nodes.xls')
-        #with open('steps_to_nodes.txt', 'a') as out:
-        #    #out.write('\n')
-        #   out.write('{0},{1}'.format(len(G.nodes), counter))
-        #    out.write('\n')
 
-    def get_print_stepped_list(self, G):
-        stepped_list = []
-        for node in sorted(G.nodes()):
-            stepped_list.append(self.stepped(G, node))
-        # converting the list to string of integers
-        string_of_int = (', '.join(str(x) for x in stepped_list))
+
+    #def get_print_stepped_list(self, G):
+    #    stepped_list = []
+    #    for node in sorted(G.nodes()):
+    #        stepped_list.append(self.stepped(G, node))
+    #    # converting the list to string of integers
+    #    string_of_int = (', '.join(str(x) for x in stepped_list))
 
         # write steps to csv file
-        with open('output_walks2.txt', 'a') as out:
-            out.write('\n')
+    #    with open('output_walks2.txt', 'a') as out:
+    #        out.write('\n')
             # text = "Coverage steps of Graph:"
             # out.write(text)
-            out.write('\n')
-            for row in string_of_int:
-                for col in row:
-                    out.write('{0}'.format(col))
-        return stepped_list
-
-
-## https://networkx.github.io/documentation/networkx-1.9/reference/generated/networkx.classes.function.density.html
+    #        out.write('\n')
+    #        for row in string_of_int:
+    #            for col in row:
+    #                out.write('{0}'.format(col))
+    #    return stepped_list

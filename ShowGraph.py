@@ -61,15 +61,3 @@ class ShowGraph:
 
     def printt(self):
         print("test")
-
-
-
-"""
-add colors to grapg
-https://stackoverflow.com/questions/20523327/python-and-networkx-how-to-change-the-color-of-nodes
-"""
-
-# print(node_colors)
-# nx.draw_circular(G, node_color=node_colors)
-# plt.show()
-# plt.savefig('visual graphs\\books_read2.png')
