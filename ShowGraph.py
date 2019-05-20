@@ -1,13 +1,11 @@
-# from Graph_from_txt import GraphFromTxt
-import networkx as nx
 from networkx import *
 import matplotlib.pyplot as plt
 
 
+# This class is for showing the graph we saved with networkx.
 class ShowGraph:
-
+    # This function initializes the graph.
     def __init__(self, G):
-        print("init - show graph")
         self.node_blue_colors = []
         self.node_red_colors = []
         self.node_green_color = []
@@ -19,28 +17,15 @@ class ShowGraph:
             else:
                 self.node_red_colors.append(i)
 
-
-    # def get_blue_color(self):
-    #     return self.node_blue_colors
-    #
-    # def get_red_color(self):
-    #     return self.node_red_colors
-    #
-    # def get_pos(self):
-    #     return self.pos
-    """, blue, red, _pos"""
+    # This function draws the graph with networkx and reloads every 2 seceonds.
+    # Blue - Not yet stepped.
+    # Green - Current node.
+    # Red - Stepped node.
     def show_graph(self, G, current_node):
-        # with_labels=True,
-        # fig = plt.figure(figsize=(12, 12))
-        # ax = plt.subplot(111)
-        # ax.set_title('Graph - Shapes', fontsize=10)
-        # print(self.node_blue_colors)
-        # print(self.node_red_colors)
         nx.draw(G, self.pos, nodelist=self.node_blue_colors, node_color='r', node_size=250, alpha=0.8, with_labels=True)
         nx.draw(G, self.pos, nodelist=self.node_red_colors, node_color='b', node_size=250, alpha=0.8, with_labels=True)
         nx.draw(G, self.pos, nodelist=[current_node], node_color='g', node_size=250, alpha=0.8, with_labels=True)
 
-        # nx.draw(G, pos, node_color=node_colors, node_size=250, with_labels=True)
         plt.title("Random Walk")
         plt.show(block=False)
         plt.savefig('random_walk_2d.png', dpi=250)

@@ -3,15 +3,15 @@ import math
 import threading
 import xlrd as xlrd
 from networkx import *
-import numpy
 import random
 from ShowGraph import ShowGraph
 import sys
 from xlutils.copy import copy
 
+
 # This class is for the random walk on the given graph.
 class GraphFromTxt:
-
+    # This function initializes the graph we saved before.
     def __init__(self):
         self.GraphStan = []
         file = open("output_graph.txt", "r")
@@ -153,7 +153,7 @@ class GraphFromTxt:
         sh.write(sheet.nrows, 1, counter)
         wb.save('steps_to_nodes.xls')
 
-
+    # Not needed function for now.
     #def get_print_stepped_list(self, G):
     #    stepped_list = []
     #    for node in sorted(G.nodes()):

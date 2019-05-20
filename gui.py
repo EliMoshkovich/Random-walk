@@ -12,6 +12,7 @@ class GUI:
         menu = Menu(root)
         root.config(menu=menu)
         root.geometry("400x250+600+300")
+
         filemenu = Menu(menu, tearoff=0)
         filemenu.add_command(label='Open...', command=self.build_from_text)
         filemenu.add_separator()
@@ -33,10 +34,12 @@ class GUI:
         self.e1.pack()
         l2.pack(fill=X)
         self.e2.pack()
+
         global show_graph
         show_graph = IntVar()
         c = Checkbutton(root, text="Show Graph", variable=show_graph, onvalue=1, offvalue=0)
         c.pack()
+
         Button(root, text='Regular Graph', command=self.build_regular).pack(fill="none", expand=True)
         Button(root, text='Random Graph', command=self.build_random).pack(fill="none", expand=True)
         Button(root, text='Tree Graph', command=self.build_tree).pack(fill="none", expand=True)
@@ -47,7 +50,6 @@ class GUI:
         steps = parse.run_random(show_graph.get())
         #self.Mbox('Done!', "Number of steps: " + str(steps) + "\nNumber of nodes: " + self.e1.get() + "\nThe density of the graph: " + density(parse), 1)
 
-
     # This is the about pop up.
     def about(self):
         self.Mbox('About', 'Hi and welcome to our Project!\n'
@@ -55,9 +57,11 @@ class GUI:
                            'You can build a tree, a regular graph and a random graph.\n'
                             'After that just choose File-->Open and it will open your last built Graph and run random walk on it.', 1)
 
+    # This function is for the pop up.
     def Mbox(self, title, text, style):
         return ctypes.windll.user32.MessageBoxW(0, text, title, style)
 
+    # This function builds the tree graph with the given attributes.
     def build_tree(self):
         try:
             D.update_v(int(self.e1.get()))
@@ -65,6 +69,7 @@ class GUI:
         except ValueError:
             self.Mbox('Error!', 'Please insert two integers!', 1)
 
+    # This function builds the graph graph with the given attributes.
     def build_regular(self):
         try:
             D.update_v(int(self.e1.get()))
@@ -78,16 +83,16 @@ class GUI:
         except ValueError:
             self.Mbox('Error!', 'Please insert two integers!', 1)
 
+    # This function builds the random graph with the given attributes.
     def build_random(self):
         try:
             D.update_v(int(self.e1.get()))
             D.update_e(int(self.e2.get()))
             D.random_graph()
-
         except ValueError:
             self.Mbox('Error!', 'Please insert two integers!', 1)
 
-
+# Open the gui.
 root = Tk()
 D = Drive()
 my_gui = GUI(root, D)
