@@ -1,5 +1,7 @@
 from networkx import *
+import matplotlib
 import matplotlib.pyplot as plt
+matplotlib.use('TkAgg')
 
 
 # This class is for showing the graph we saved with networkx.
@@ -33,16 +35,15 @@ class ShowGraph:
         plt.close()
         # node_colors[next_node] = 'b'
 
-
+    # Change the color to red.
     def to_red(self, n):
         if n in self.node_blue_colors:
             self.node_blue_colors.remove(n)
             self.node_red_colors.append(n)
 
-    def to_blue(self,n):
+    # Change the color to blue.
+    def to_blue(self, n):
         if n in self.node_red_colors:
             self.node_red_colors.remove(n)
             self.node_blue_colors.append(n)
 
-    def printt(self):
-        print("test")
